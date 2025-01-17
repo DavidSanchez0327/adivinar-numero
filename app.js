@@ -1,9 +1,26 @@
-
-let intentos = 1;
+let intentos = 0;
+let listaNumerosSorteados = [];
 let numeroMaximo = 10;
 let numeroRandom = generarNumeroRandom(numeroMaximo);
-let listaNumerosSorteados = [];
-console.log(numeroRandom);
+
+function generarNumeroRandom(numeroMaximo) {
+    let numeroGenerado = Math.floor((Math.random() * numeroMaximo) + 1);
+
+    if (listaNumerosSorteados.length == numeroMaximo) {
+        asignarTextoElemento('Ya se sortearon todos los números posibles', 'p');
+    } else {
+        if (listaNumerosSorteados.includes(numeroGenerado)) {
+            return generarNumeroRandom(numeroMaximo);
+        } else {
+            listaNumerosSorteados.push(numeroGenerado);
+            return numeroGenerado;
+        }
+    }
+}
+
+function limpiarCaja() {
+    document.querySelector("#valorUsuario").value = "";
+}
 
 function asignarTextoElemento(texto, etiqueta) {
     let titulo = document.querySelector(etiqueta);
@@ -13,7 +30,7 @@ function asignarTextoElemento(texto, etiqueta) {
 function verificarIntento() {
 
     let numeroUsuario = parseInt(document.getElementById('valorUsuario').value);
-    // usar el === valida que sea el mismo valor y mismo tipo de dato
+
     if (numeroUsuario === numeroRandom) {
 
         asignarTextoElemento('Lo adivinaste!, numero de intentos: ' + intentos, 'p');
@@ -32,28 +49,8 @@ function verificarIntento() {
 
 }
 
-function limpiarCaja() {
-    document.querySelector("#valorUsuario").value = "";
-}
-
-function generarNumeroRandom(numeroMaximo) {
-    let numeroGenerado = Math.floor((Math.random() * numeroMaximo) + 1);
-
-    if (listaNumerosSorteados.length === numeroMaximo) {
-        reiniciarJuego();
-    } else {
-        validarNumerosSorteados(numeroMaximo, numeroGenerado);
-    }
-
-}
-
 function validarNumerosSorteados(numeroMaximo, numeroGenerado) {
-    if (listaNumerosSorteados.includes(numeroGenerado)) {
-        return generarNumeroRandom(numeroMaximo);
-    } else {
-        listaNumerosSorteados.push(numeroGenerado);
-        return numeroGenerado;
-    }
+
 }
 
 function reiniciarJuego() {
@@ -69,3 +66,5 @@ function condicionesIniciales() {
     asignarTextoElemento('Indica un numero del 1 al ' + numeroMaximo, 'p');
     intentos = 1;
 }
+
+condicionesIniciales();
